@@ -27,3 +27,6 @@ usable_proxies.json
 
 # Temp files
 ~$*.docx
+
+# Exclude QQ music project
+QQ“Ù¿÷/
