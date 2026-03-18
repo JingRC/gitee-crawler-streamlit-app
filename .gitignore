@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environments
+.venv/
+venv/
+
+# IDE/OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local data outputs
+爬取内容/*.csv
+爬取内容/*.json
+proxy_test_report.csv
+proxy_test_report.json
+usable_proxies.json
+
+# Temp files
+~$*.docx

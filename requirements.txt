@@ -1,0 +1,6 @@
+streamlit>=1.33
+pandas>=2.2
+requests>=2.31
+matplotlib>=3.8
+wordcloud>=1.9
+jieba>=0.42
