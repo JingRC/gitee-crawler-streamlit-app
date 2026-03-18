@@ -8,6 +8,7 @@ import sys
 from collections import Counter
 from pathlib import Path
 
+import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
@@ -21,9 +22,6 @@ try:
   from wordcloud import WordCloud
 except ImportError:
   WordCloud = None
-
-plt.rcParams["font.sans-serif"] = ["Microsoft YaHei", "SimHei", "Arial Unicode MS"]
-plt.rcParams["axes.unicode_minus"] = False
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -418,6 +416,8 @@ preview_box = st.empty()
 
 
 CN_FONT_CANDIDATES = [
+  BASE_DIR / "assets" / "fonts" / "NotoSansCJKsc-Regular.otf",
+  BASE_DIR / "assets" / "fonts" / "NotoSansSC-Regular.ttf",
   Path("C:/Windows/Fonts/msyh.ttc"),
   Path("C:/Windows/Fonts/simhei.ttf"),
   Path("C:/Windows/Fonts/simsun.ttc"),
@@ -436,6 +436,24 @@ def find_chinese_font() -> str | None:
     if font_path.exists():
       return str(font_path)
   return None
+
+
+def configure_matplotlib_font() -> None:
+  font_path = find_chinese_font()
+  if font_path:
+    try:
+      fm.fontManager.addfont(font_path)
+      font_name = fm.FontProperties(fname=font_path).get_name()
+      plt.rcParams["font.family"] = font_name
+      plt.rcParams["font.sans-serif"] = [font_name, "DejaVu Sans"]
+    except Exception:
+      plt.rcParams["font.sans-serif"] = ["Microsoft YaHei", "SimHei", "Arial Unicode MS", "DejaVu Sans"]
+  else:
+    plt.rcParams["font.sans-serif"] = ["Microsoft YaHei", "SimHei", "Arial Unicode MS", "DejaVu Sans"]
+  plt.rcParams["axes.unicode_minus"] = False
+
+
+configure_matplotlib_font()
 
 
 def make_star_numeric(star_series: pd.Series) -> pd.Series:
