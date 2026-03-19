@@ -331,6 +331,133 @@ header[data-testid="stHeader"],
 [data-testid="stDecoration"] {
   display: none !important;
 }
+
+@media (max-width: 900px) {
+  [data-testid="stHorizontalBlock"] {
+    flex-direction: column !important;
+    gap: 0.8rem !important;
+  }
+
+  [data-testid="stVerticalBlock"] > [style*="flex-direction: column;"] > [data-testid="stVerticalBlock"] {
+    gap: 0.75rem !important;
+  }
+
+  .hero {
+    border-radius: 18px;
+    padding: 16px 14px;
+    margin-bottom: 10px;
+  }
+
+  .hero h1 {
+    font-size: 1.55rem;
+    line-height: 1.25;
+  }
+
+  .hero p {
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .chip-row {
+    gap: 6px;
+  }
+
+  .chip {
+    font-size: 11px;
+    padding: 6px 9px;
+  }
+
+  .block {
+    border-radius: 14px;
+    padding: 12px;
+    box-shadow: 0 6px 14px rgba(8, 45, 62, 0.1);
+  }
+
+  .viz-card {
+    border-radius: 12px;
+    padding: 10px;
+  }
+
+  .stats-wrap {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .stat-card {
+    border-radius: 12px;
+    padding: 10px 10px 9px;
+  }
+
+  .stat-value {
+    font-size: 1.45rem;
+  }
+
+  .viz-title {
+    font-size: 1rem;
+  }
+
+  .viz-note,
+  .small-note,
+  .guide-card p {
+    font-size: 0.84rem;
+    line-height: 1.5;
+  }
+
+  div.stButton > button,
+  div.stDownloadButton > button {
+    min-height: 44px;
+    width: 100%;
+  }
+
+  [data-testid="stSidebar"] {
+    border-right: none;
+  }
+
+  [data-testid="stDataFrame"] {
+    border-radius: 10px;
+  }
+
+  [data-testid="stExpander"] {
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero h1 {
+    font-size: 1.35rem;
+  }
+
+  .hero p {
+    font-size: 0.86rem;
+  }
+
+  .chip {
+    font-size: 10px;
+    padding: 5px 8px;
+  }
+
+  .block {
+    padding: 10px;
+  }
+
+  .viz-card {
+    padding: 9px;
+    margin-bottom: 9px;
+  }
+
+  .stat-title {
+    font-size: 0.78rem;
+  }
+
+  .stat-value {
+    font-size: 1.28rem;
+  }
+
+  [data-testid="stCode"] {
+    font-size: 12px;
+  }
+}
 </style>
 """,
     unsafe_allow_html=True,
