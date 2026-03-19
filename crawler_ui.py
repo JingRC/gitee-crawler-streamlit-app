@@ -23,6 +23,11 @@ try:
 except ImportError:
   WordCloud = None
 
+try:
+  from PIL import ImageFont
+except ImportError:
+  ImageFont = None
+
 
 BASE_DIR = Path(__file__).resolve().parent
 CRAWLER_FILE = BASE_DIR / "forum.py"
@@ -418,6 +423,9 @@ preview_box = st.empty()
 CN_FONT_CANDIDATES = [
   BASE_DIR / "assets" / "fonts" / "NotoSansCJKsc-Regular.otf",
   BASE_DIR / "assets" / "fonts" / "NotoSansSC-Regular.ttf",
+  Path("/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"),
+  Path("/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc"),
+  Path("/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc"),
   Path("C:/Windows/Fonts/msyh.ttc"),
   Path("C:/Windows/Fonts/simhei.ttf"),
   Path("C:/Windows/Fonts/simsun.ttc"),
@@ -433,8 +441,14 @@ WORD_STOPWORDS = {
 
 def find_chinese_font() -> str | None:
   for font_path in CN_FONT_CANDIDATES:
-    if font_path.exists():
+    if not font_path.exists() or font_path.stat().st_size < 100000:
+      continue
+    try:
+      if ImageFont is not None:
+        ImageFont.truetype(str(font_path), 16)
       return str(font_path)
+    except OSError:
+      continue
   return None
 
 
@@ -876,21 +890,24 @@ def render_analytics(df: pd.DataFrame) -> None:
     st.info("简介文本太少或无有效关键词，无法生成词云。")
   else:
     font_path = find_chinese_font()
-    wc = WordCloud(
-      width=1200,
-      height=560,
-      background_color="white",
-      max_words=180,
-      colormap="viridis",
-      font_path=font_path,
-      prefer_horizontal=0.9,
-    ).generate_from_frequencies(freq)
+    try:
+      wc = WordCloud(
+        width=1200,
+        height=560,
+        background_color="white",
+        max_words=180,
+        colormap="viridis",
+        font_path=font_path,
+        prefer_horizontal=0.9,
+      ).generate_from_frequencies(freq)
 
-    fig, ax = plt.subplots(figsize=(12, 5.5), dpi=120)
-    ax.imshow(wc, interpolation="bilinear")
-    ax.axis("off")
-    st.pyplot(fig, use_container_width=True)
-    plt.close(fig)
+      fig, ax = plt.subplots(figsize=(12, 5.5), dpi=120)
+      ax.imshow(wc, interpolation="bilinear")
+      ax.axis("off")
+      st.pyplot(fig, use_container_width=True)
+      plt.close(fig)
+    except OSError:
+      st.warning("词云字体加载失败，已跳过词云渲染。请在云端 Reboot 后重试。")
   st.markdown("</div>", unsafe_allow_html=True)
 
   st.markdown('<div class="viz-card">', unsafe_allow_html=True)
